@@ -12,7 +12,7 @@ public:
   /*****************************************************************************/
   void testMatrixIdentity( void )
   {
-    StarFloat4x4 matStar;
+    Star::float4x4 matStar;
     Ogre::Matrix4 matOgre = Ogre::Matrix4::IDENTITY;
 
     matStar.toIdentity();
@@ -26,7 +26,7 @@ public:
     vector<float> randValues;
     generate_n(back_inserter(randValues), 16, FloatRandGen(100000.f));
 
-    StarFloat4x4 matStar(&randValues[0]);
+    Star::float4x4 matStar(&randValues[0]);
     TS_ASSERT( true );
   }
 
@@ -41,7 +41,7 @@ public:
                      randValues[4], randValues[5], randValues[6], randValues[7],
                      randValues[8], randValues[9], randValues[10], randValues[11],
                      randValues[12], randValues[13], randValues[14], randValues[15]);
-    StarFloat4x4 matStar(randValues[0], randValues[1], randValues[2], randValues[3],
+    Star::float4x4 matStar(randValues[0], randValues[1], randValues[2], randValues[3],
                          randValues[4], randValues[5], randValues[6], randValues[7],
                          randValues[8], randValues[9], randValues[10], randValues[11],
                          randValues[12], randValues[13], randValues[14], randValues[15]);
@@ -62,8 +62,8 @@ public:
     ogreMatCopy(matDx, &randValues[0]);
     ogreMatCopy(matDx2, &randValues2[0]);
 
-    StarFloat4x4 matStar(&randValues[0]);
-    StarFloat4x4 matStar2(&randValues2[0]);
+    Star::float4x4 matStar(&randValues[0]);
+    Star::float4x4 matStar2(&randValues2[0]);
 
     matStar *= matStar2;
     TS_ASSERT( true );
@@ -98,8 +98,8 @@ public:
     ogreMatCopy(matDx, &randValues[0]);
     ogreMatCopy(matDx2, &randValues2[0]);
 
-    StarFloat4x4 matStar(&randValues[0]);
-    StarFloat4x4 matStar2(&randValues2[0]);
+    Star::float4x4 matStar(&randValues[0]);
+    Star::float4x4 matStar2(&randValues2[0]);
 
     matDx = matDx+matDx2;
     matStar = matStar+matStar2;
@@ -134,7 +134,7 @@ private:
   }
 
 /*****************************************************************************/
-  bool isEqual(const Ogre::Matrix4& mat1, const StarFloat4x4& mat2)
+  bool isEqual(const Ogre::Matrix4& mat1, const Star::float4x4& mat2)
   {
    for ( size_t j = 0; j < 4; j++)
       for ( size_t i = 0; i < 4; i++)

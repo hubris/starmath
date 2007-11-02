@@ -5,14 +5,14 @@ int
 main()
 {
 
-  StarFloat2 a;    
+  StarFloat2 a;
   StarFloat3 b;
   StarFloat4 c;
 
   StarFloat3 d;
 
-  StarFloat4x4 mat;
-  StarFloat4x4 mat2;
+  Star::float4x4 mat;
+  Star::float4x4 mat2;
   mat.toIdentity();
   mat *= 5.f;
   mat2.toIdentity();

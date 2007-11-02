@@ -3,202 +3,204 @@
 
 #include <iostream>
 
-template <typename T> class StarVec2;
-template <typename T> StarVec2<T> operator *( T, const StarVec2<T>& );
-
-template <typename T>
-class StarVec2
+namespace Star
 {
-public:
-  StarVec2() {}
-  StarVec2 ( const T * );
-  StarVec2 ( T x, T y );
+  template <typename T> class Vec2;
+  template <typename T> Vec2<T> operator *( T, const Vec2<T>& );
 
-  // casting
-  operator T* ();
-  operator const T* () const;
+  template <typename T>
+  class Vec2
+  {
+  public:
+    Vec2() {}
+    Vec2 ( const T * );
+    Vec2 ( T x, T y );
 
-  // assignment operators
-  StarVec2<T>& operator += ( const StarVec2<T>& );
-  StarVec2<T>& operator -= ( const StarVec2<T>& );
-  StarVec2<T>& operator *= ( T );
-  StarVec2<T>& operator /= ( T );
+    // casting
+    operator T* ();
+    operator const T* () const;
 
-  // unary operators
-  StarVec2 operator + () const;
-  StarVec2 operator - () const;
+    // assignment operators
+    Vec2<T>& operator += ( const Vec2<T>& );
+    Vec2<T>& operator -= ( const Vec2<T>& );
+    Vec2<T>& operator *= ( T );
+    Vec2<T>& operator /= ( T );
 
-  // binary operators
-  StarVec2 operator + ( const StarVec2<T>& ) const;
-  StarVec2 operator - ( const StarVec2<T>& ) const;
-  StarVec2 operator * ( T ) const;
-  StarVec2 operator / ( T ) const;
+    // unary operators
+    Vec2 operator + () const;
+    Vec2 operator - () const;
 
-  template <typename T2> friend StarVec2 operator *( T2, const StarVec2<T2>& );
+    // binary operators
+    Vec2 operator + ( const Vec2<T>& ) const;
+    Vec2 operator - ( const Vec2<T>& ) const;
+    Vec2 operator * ( T ) const;
+    Vec2 operator / ( T ) const;
 
-  bool operator == ( const StarVec2<T>& ) const;
-  bool operator != ( const StarVec2<T>& ) const;
+    template <typename T2> friend Vec2 operator *( T2, const Vec2<T2>& );
 
-public:
-  T x, y;
-};
+    bool operator == ( const Vec2<T>& ) const;
+    bool operator != ( const Vec2<T>& ) const;
+
+  public:
+    T x, y;
+  };
 
 /*****************************************************************************/
-typedef StarVec2<float> StarFloat2;
-typedef StarVec2<double> StarDouble2;
-typedef StarVec2<int> StarInt2;
-typedef StarVec2<unsigned int> StarUint2;
+  typedef Vec2<float> float2;
+  typedef Vec2<double> double2;
+  typedef Vec2<int> int2;
+  typedef Vec2<unsigned int> uint2;
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>::StarVec2 ( const T *p )
-{
-  x = p[0];
-  y = p[1];
-}
+  template <typename T>
+  Vec2<T>::Vec2 ( const T *p )
+  {
+    x = p[0];
+    y = p[1];
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>::StarVec2 ( T x, T y )
-: x(x), y(y)
-{
-}
+  template <typename T>
+  Vec2<T>::Vec2 ( T x, T y )
+  : x(x), y(y)
+  {
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>::operator T* ()
-{
-  return &x;
-}
+  template <typename T>
+  Vec2<T>::operator T* ()
+  {
+    return &x;
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>::operator const T* () const
-{
-  return (const T*)&x;
-}
+  template <typename T>
+  Vec2<T>::operator const T* () const
+  {
+    return (const T*)&x;
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>&
-StarVec2<T>::operator += ( const StarVec2<T>& v )
-{
-  x += v.x;
-  y += v.y;
+  template <typename T>
+  Vec2<T>&
+  Vec2<T>::operator += ( const Vec2<T>& v )
+  {
+    x += v.x;
+    y += v.y;
 
-  return *this;
-}
-
-/*****************************************************************************/
-template <typename T>
-StarVec2<T>&
-StarVec2<T>::operator -= ( const StarVec2<T>& v )
-{
-  x -= v.x;
-  y -= v.y;
-
-  return *this;
-}
-/*****************************************************************************/
-template <typename T>
-StarVec2<T>&
-StarVec2<T>::operator *= ( T k )
-{
-  x *= k;
-  y *= k;
-
-  return *this;
-}
+    return *this;
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>&
-StarVec2<T>::operator /= ( T k )
-{
-  x /= k;
-  y /= k;
+  template <typename T>
+  Vec2<T>&
+  Vec2<T>::operator -= ( const Vec2<T>& v )
+  {
+    x -= v.x;
+    y -= v.y;
 
-  return *this;
-}
+    return *this;
+  }
+/*****************************************************************************/
+  template <typename T>
+  Vec2<T>&
+  Vec2<T>::operator *= ( T k )
+  {
+    x *= k;
+    y *= k;
+
+    return *this;
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>
-StarVec2<T>::operator + () const
-{
-  return *this;
-}
+  template <typename T>
+  Vec2<T>&
+  Vec2<T>::operator /= ( T k )
+  {
+    x /= k;
+    y /= k;
+
+    return *this;
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>
-StarVec2<T>::operator - () const
-{
-  return StarVec2(-x, -y);
-}
+  template <typename T>
+  Vec2<T>
+  Vec2<T>::operator + () const
+  {
+    return *this;
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>
-StarVec2<T>::operator + ( const StarVec2<T>& v ) const
-{
-  return StarVec2(x+v.x, y+v.y);
-}
+  template <typename T>
+  Vec2<T>
+  Vec2<T>::operator - () const
+  {
+    return Vec2(-x, -y);
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>
-StarVec2<T>::operator - ( const StarVec2<T>& v ) const
-{
-  return StarVec2<T>(x-v.x, y-v.y);
-}
+  template <typename T>
+  Vec2<T>
+  Vec2<T>::operator + ( const Vec2<T>& v ) const
+  {
+    return Vec2(x+v.x, y+v.y);
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>
-StarVec2<T>::operator * ( T k ) const
-{
-  return StarVec2<T>(x*k, y*k);
-}
+  template <typename T>
+  Vec2<T>
+  Vec2<T>::operator - ( const Vec2<T>& v ) const
+  {
+    return Vec2<T>(x-v.x, y-v.y);
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>
-StarVec2<T>::operator / ( T k ) const
-{
-  return StarVec2<T>(x/k, y/k);
-}
+  template <typename T>
+  Vec2<T>
+  Vec2<T>::operator * ( T k ) const
+  {
+    return Vec2<T>(x*k, y*k);
+  }
 
 /*****************************************************************************/
-template <typename T>
-StarVec2<T>
-operator * ( T k, const StarVec2<T>& v )
-{
-  return StarVec2<T>(k*v.x, k*v.y);
-}
+  template <typename T>
+  Vec2<T>
+  Vec2<T>::operator / ( T k ) const
+  {
+    return Vec2<T>(x/k, y/k);
+  }
 
 /*****************************************************************************/
-template <typename T>
-bool
-StarVec2<T>::operator == ( const StarVec2<T>& v ) const
-{
-  return v.x == x && v.y == y;
-}
+  template <typename T>
+  Vec2<T>
+  operator * ( T k, const Vec2<T>& v )
+  {
+    return Vec2<T>(k*v.x, k*v.y);
+  }
 
 /*****************************************************************************/
-template <typename T>
-bool
-StarVec2<T>::operator != ( const StarVec2<T>& v ) const
-{
-  return v.x != x || v.y != y;
+  template <typename T>
+  bool
+  Vec2<T>::operator == ( const Vec2<T>& v ) const
+  {
+    return v.x == x && v.y == y;
+  }
+
+/*****************************************************************************/
+  template <typename T>
+  bool
+  Vec2<T>::operator != ( const Vec2<T>& v ) const
+  {
+    return v.x != x || v.y != y;
+  }
 }
 
 /*****************************************************************************/
 template <typename T>
 std::ostream&
-operator << (std::ostream& os, const StarVec2<T>& s)
+operator << (std::ostream& os, const Star::Vec2<T>& s)
 {
   return os << "(" << s.x << ", " << s.y << ")";
 }
-
 #endif
