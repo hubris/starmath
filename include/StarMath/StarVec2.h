@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+template <typename T> class StarVec2;
+template <typename T> StarVec2<T> operator *( T, const StarVec2<T>& );
+
 template <typename T>
 class StarVec2
 {
@@ -31,7 +34,7 @@ public:
   StarVec2 operator * ( T ) const;
   StarVec2 operator / ( T ) const;
 
-  friend StarVec2 operator * ( T, const StarVec2<T>& );
+  template <typename T2> friend StarVec2 operator *( T2, const StarVec2<T2>& );
 
   bool operator == ( const StarVec2<T>& ) const;
   bool operator != ( const StarVec2<T>& ) const;

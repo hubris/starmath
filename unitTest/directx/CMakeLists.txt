@@ -1,0 +1,4 @@
+CXXTEST_GENERATE_RUNNER(MathTestSuite.h MathTestSuiteRunner.cpp)
+
+add_executable(testDirectX MathTestSuiteRunner.cpp)
+target_link_libraries(testDirectX StarMath dx3d10)
