@@ -1,5 +1,6 @@
 project(StarMath)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+ENABLE_TESTING()
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 message(FATAL_ERROR "CMake generation is not allowed within the source directory! 
@@ -15,6 +16,7 @@ endif(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 
 
 include(cmake/FindStarMath.cmake)
+include(cmake/FindCxxTest.cmake)
 
 if(NOT STARMATH_INCLUDE_FOUND)
   message(FATAL_ERROR "StarMath include directory not found")

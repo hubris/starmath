@@ -1,8 +1,8 @@
 FIND_PATH(STARMATH_INCLUDE_DIR StarMath.h
-					$ENV{STARMATH_DIR}/include
-					${PROJECT_SOURCE_DIR}/include
-				  /usr/include/SDL
-    			/usr/local/include/SDL
+                               $ENV{STARMATH_DIR}/include
+			       ${PROJECT_SOURCE_DIR}/include
+			       /usr/include/SDL
+    			       /usr/local/include/SDL
 )
 
 set(STARMATH_INCLUDE_FOUND "NO")
@@ -11,9 +11,9 @@ if(EXISTS ${STARMATH_INCLUDE_DIR})
 endif(EXISTS ${STARMATH_INCLUDE_DIR})
 
 FIND_LIBRARY(STARMATH_LIBRARY StarMath
-					   $ENV{STARMATH_DIR}/lib
-						 /usr/lib
-    			   /usr/local/lib
+                              $ENV{STARMATH_DIR}/lib
+			      /usr/lib
+    			      /usr/local/lib
 )
 
 set(STARMATH_LIB_FOUND "NO")
