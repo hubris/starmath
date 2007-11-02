@@ -1,5 +1,6 @@
 FIND_PATH(STARMATH_INCLUDE_DIR StarMath.h
 					$ENV{STARMATH_DIR}/include
+					${PROJECT_SOURCE_DIR}/include
 				  /usr/include/SDL
     			/usr/local/include/SDL
 )
