@@ -1,6 +1,8 @@
 #ifndef STAR_VEC3_H
 #define STAR_VEC3_H
 
+#include <cmath>
+
 namespace Star
 {
   template <typename T>
@@ -36,12 +38,17 @@ namespace Star
     bool operator == ( const Vec3& ) const;
     bool operator != ( const Vec3& ) const;
 
+    // vector operation
+    T length() const;
+    T normalize();
+    T dot(const Vec3& a) const;
+
   public:
     T x, y, z;
   };
 
 /*****************************************************************************/
-  typedef Vec3<float> dloat3;
+  typedef Vec3<float> float3;
   typedef Vec3<double> double3;
   typedef Vec3<int> int3;
   typedef Vec3<unsigned int> uint3;
@@ -194,7 +201,35 @@ namespace Star
   {
     return v.x != x || v.y != y || v.z != z;
   }
+
+/*****************************************************************************/
+  template <typename T>
+  T
+  Vec3<T>::length() const
+  {
+    return std::sqrt(dot(*this));
+  }
+
+/*****************************************************************************/
+  template <typename T>
+  T
+  Vec3<T>::normalize()
+  {
+    T len = length();
+    *this *= T(1)/len;
+
+    return len;
+  }
+
+/*****************************************************************************/
+  template <typename T>
+  T
+  Vec3<T>::dot(const Vec3& a) const
+  {
+    return a.x*x+a.y*y+a.z*z;
+  }
 }
+
 
 /*****************************************************************************/
 template <typename T>

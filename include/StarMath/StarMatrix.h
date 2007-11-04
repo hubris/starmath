@@ -43,6 +43,24 @@ namespace Star
     const Matrix operator * ( T ) const;
     const Matrix operator / ( T ) const;
 
+    /**
+     * Return the determinant of the submatrix composed of rows r0, r1, r2
+     * and columns c0, c1, c2
+     */
+    T minor4(size_t r0, size_t r1, size_t r2, size_t c0, size_t c1, size_t c2) const;
+    Matrix adjoint4() const;
+    T determinant() const;
+    Matrix inverse() const;
+    Matrix inverse(T& determinant) const;
+    Matrix transpose() const;
+
+    // transformations
+    void makeTranslation(T x, T y, T z);
+    void makeTranslation(const Vec3<T> &tr);
+    void makeScaling(const Vec3<T> &scale);
+    void makeScaling(T sx, T sy, T sz);
+    void makeRotationAxis(const Vec3<T> axis, T angle);
+
     friend Matrix operator * ( T k, const Matrix& v)
     {
       return Matrix(k*v(0,0), k*v(0,1), k*v(0,2), k*v(0,3),
@@ -286,6 +304,186 @@ namespace Star
     m_mat[1][0] = 0; m_mat[1][1] = 1; m_mat[1][2] = 0; m_mat[1][3]= 0;
     m_mat[2][0] = 0; m_mat[2][1] = 0; m_mat[2][2] = 1; m_mat[2][3]= 0;
     m_mat[3][0] = 0; m_mat[3][1] = 0; m_mat[3][2] = 0; m_mat[3][3]= 1;
+  }
+
+/*****************************************************************************/
+  template <typename T>
+  T
+  Matrix<T>::minor4(size_t r0, size_t r1, size_t r2,
+                    size_t c0, size_t c1, size_t c2) const
+  {
+    return m_mat[r0][c0]*(m_mat[r1][c1]*m_mat[r2][c2]-m_mat[r1][c2]*m_mat[r2][c1])-
+           m_mat[r0][c1]*(m_mat[r1][c0]*m_mat[r2][c2]-m_mat[r2][c0]*m_mat[r1][c2])+
+           m_mat[r0][c2]*(m_mat[r1][c0]*m_mat[r2][c1]-m_mat[r2][c0]*m_mat[r1][c1]);
+  }
+
+ /*****************************************************************************/
+  template <typename T>
+  T
+  Matrix<T>::determinant() const
+  {
+    //Use Laplace formula
+    return m_mat[0][0]*minor4(1, 2, 3, 1, 2, 3) -
+           m_mat[0][1]*minor4(1, 2, 3, 0, 2, 3) +
+           m_mat[0][2]*minor4(1, 2, 3, 0, 1, 3) -
+           m_mat[0][3]*minor4(1, 2, 3, 0, 1, 2);
+  }
+
+
+  /*****************************************************************************/
+  template <typename T>
+  Matrix<T>
+  Matrix<T>::adjoint4() const
+  {
+    Matrix<T> adj;
+
+    adj(0, 0) =  minor4(1, 2, 3, 1, 2, 3);
+    adj(0, 1) = -minor4(0, 2, 3, 1, 2, 3);
+    adj(0, 2) =  minor4(0, 1, 3, 1, 2, 3);
+    adj(0, 3) = -minor4(0, 1, 2, 1, 2, 3);
+
+    adj(1, 0) = -minor4(1, 2, 3, 0, 2, 3);
+    adj(1, 1) =  minor4(0, 2, 3, 0, 2, 3);
+    adj(1, 2) = -minor4(0, 1, 3, 0, 2, 3);
+    adj(1, 3) =  minor4(0, 1, 2, 0, 2, 3);
+
+    adj(2, 0) =  minor4(1, 2, 3, 0, 1, 3);
+    adj(2, 1) = -minor4(0, 2, 3, 0, 1, 3);
+    adj(2, 2) =  minor4(0, 1, 3, 0, 1, 3);
+    adj(2, 3) = -minor4(0, 1, 2, 0, 1, 3);
+
+    adj(3, 0) = -minor4(1, 2, 3, 0, 1, 2);
+    adj(3, 1) =  minor4(0, 2, 3, 0, 1, 2);
+    adj(3, 2) = -minor4(0, 1, 3, 0, 1, 2);
+    adj(3, 3) =  minor4(0, 1, 2, 0, 1, 2);
+
+    return adj;
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  Matrix<T>
+  Matrix<T>::inverse() const
+  {
+    T det;
+    return inverse(det);
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  Matrix<T>
+  Matrix<T>::inverse(T& det) const
+  {
+    det = determinant();
+
+    return (T(1)/det)*adjoint4();
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  Matrix<T>
+  Matrix<T>::transpose() const
+  {
+    return Matrix<T>(m_mat[0][0], m_mat[1][0], m_mat[2][0], m_mat[3][0],
+                     m_mat[0][1], m_mat[1][1], m_mat[2][1], m_mat[3][1],
+                     m_mat[0][2], m_mat[1][2], m_mat[2][2], m_mat[3][2],
+                     m_mat[0][3], m_mat[1][3], m_mat[2][3], m_mat[3][3]);
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  void
+  Matrix<T>::makeTranslation(const Vec3<T> &tr)
+  {
+    m_mat[0][0] = 1;
+    m_mat[0][1] = 0;
+    m_mat[0][2] = 0;
+    m_mat[0][3] = tr[0];
+
+    m_mat[1][0] = 0;
+    m_mat[1][1] = 1;
+    m_mat[1][2] = 0;
+    m_mat[1][3] = tr[1];
+
+    m_mat[2][0] = 0;
+    m_mat[2][1] = 0;
+    m_mat[2][2] = 1;
+    m_mat[2][3] = tr[2];
+
+    m_mat[3][0] = 0;
+    m_mat[3][1] = 0;
+    m_mat[3][2] = 0;
+    m_mat[3][3] = 1;
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  void
+  Matrix<T>::makeTranslation(T x, T y, T z)
+  {
+    makeTranslation(Vec3<T>(x ,y ,z));
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  void
+  Matrix<T>::makeScaling(const Vec3<T> &scale)
+  {
+    m_mat[0][0] = scale[0];
+    m_mat[0][1] = 0;
+    m_mat[0][2] = 0;
+    m_mat[0][3] = 0;
+
+    m_mat[1][0] = 0;
+    m_mat[1][1] = scale[1];
+    m_mat[1][2] = 0;
+    m_mat[1][3] = 0;
+
+    m_mat[2][0] = 0;
+    m_mat[2][1] = 0;
+    m_mat[2][2] = scale[2];
+    m_mat[2][3] = 0;
+
+    m_mat[3][0] = 0;
+    m_mat[3][1] = 0;
+    m_mat[3][2] = 0;
+    m_mat[3][3] = 1;
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  void
+  Matrix<T>::makeScaling(T sx, T sy, T sz)
+  {
+    makeScaling(Vec3<T>(sx, sy, sz));
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  void
+  Matrix<T>::makeRotationAxis(const Vec3<T> axis, T angle)
+  {
+//     Vec3<T> u = axis;
+//     u.normalize();
+//     Matrix<T> identy;
+//     identy.toIdentity();
+//     Matrix<T> S( 0,  -u.z, u.y, 0,
+//                  u.z, 0,  -u.x, 0,
+//                 -u.y, u.x, 0,   0,
+//                  0,   0,   0,   0);
+//     Matrix<T> one( 1, 1, 1, 1,
+//                    1, 1, 1, 1,
+//                    1, 1, 1, 1,
+//                    1, 1, 1, 1);
+
+//     S = u.dot(u)*identy+std::cos(angle)*(identy-identy*u.dot(u))+std::sin(angle)*S;
+//     S(3, 0) = 0;
+//     S(3, 1) = 0;
+//     S(3, 2) = 0;
+//     S(3, 3) = 1;
+
+//     *this = S;
+    //TODO: Use quaternion
   }
 
 /*****************************************************************************/

@@ -5,6 +5,7 @@
 #include <limits>
 #include <algorithm>
 #include <OGRE/OgreMatrix4.h>
+#include <OGRE/OgreMatrix3.h>
 
 class MathTestSuite : public CxxTest::TestSuite
 {
@@ -122,7 +123,131 @@ public:
 
     TS_ASSERT( isEqual((float*)&matDx[0][0], matStar.constPtr(), 16) );
     TS_ASSERT( isEqual((float*)&matDx[0][0], matStar.ptr(), 16) );
-}
+  }
+
+  /*****************************************************************************/
+  void testMatrixDeterminant( void )
+  {
+    using namespace std;
+    for ( size_t i = 0; i < 50; i++ )
+    {
+      vector<float> randValues;
+      generate_n(back_inserter(randValues), 16, FloatRandGen(10.f));
+
+      Ogre::Matrix4 matDx;
+      ogreMatCopy(matDx, &randValues[0]);
+
+      Star::float4x4 matStar(&randValues[0]);
+
+      TS_ASSERT(matStar.determinant() == matDx.determinant());
+    }
+  }
+
+  /*****************************************************************************/
+  void testMatrixInvert( void )
+  {
+    using namespace std;
+    for ( size_t i = 0; i < 50; i++ )
+    {
+      vector<float> randValues;
+      generate_n(back_inserter(randValues), 16, FloatRandGen(100.f));
+
+      Ogre::Matrix4 matDx;
+      ogreMatCopy(matDx, &randValues[0]);
+
+      Star::float4x4 matStar(&randValues[0]);
+
+      if ( std::abs(matStar.determinant()) > std::numeric_limits<float>::epsilon() )
+      {
+        matStar = matStar.inverse();
+        matDx = matDx.inverse();
+        TS_ASSERT( isEqual(matDx, matStar) );
+      }
+    }
+  }
+
+  /*****************************************************************************/
+  void testMatrixTranspose( void )
+  {
+    using namespace std;
+    for ( size_t i = 0; i < 50; i++ )
+    {
+      vector<float> randValues;
+      generate_n(back_inserter(randValues), 16, FloatRandGen(100.f));
+
+      Ogre::Matrix4 matDx;
+      ogreMatCopy(matDx, &randValues[0]);
+
+      Star::float4x4 matStar(&randValues[0]);
+
+      matStar = matStar.transpose();
+      matDx = matDx.transpose();
+      TS_ASSERT( isEqual(matDx, matStar) );
+    }
+  }
+
+  /*****************************************************************************/
+  void testMatrixTranslation( void )
+  {
+    using namespace std;
+    for ( size_t i = 0; i < 50; i++ )
+    {
+      vector<float> randValues;
+      generate_n(back_inserter(randValues), 16, FloatRandGen(100.f));
+
+      Ogre::Matrix4 matDx;
+      ogreMatCopy(matDx, &randValues[0]);
+
+      Star::float4x4 matStar(&randValues[0]);
+
+      matDx.makeTrans(randValues[0], randValues[1], randValues[2]);
+      matStar.makeTranslation(randValues[0], randValues[1], randValues[2]);
+      TS_ASSERT( isEqual(matDx, matStar) );
+    }
+  }
+
+  /*****************************************************************************/
+  void testMatrixScale( void )
+  {
+    using namespace std;
+    for ( size_t i = 0; i < 50; i++ )
+    {
+      vector<float> randValues;
+      generate_n(back_inserter(randValues), 16, FloatRandGen(100.f));
+
+      Ogre::Matrix4 matDx;
+      ogreMatCopy(matDx, &randValues[0]);
+
+      Star::float4x4 matStar(&randValues[0]);
+
+      matDx = Ogre::Matrix4::IDENTITY;
+      matDx.setScale(Ogre::Vector3(randValues[0], randValues[1], randValues[2]));
+      matStar.makeScaling(randValues[0], randValues[1], randValues[2]);
+      TS_ASSERT( isEqual(matDx, matStar) );
+    }
+  }
+
+  /*****************************************************************************/
+  void testMatrixRotate( void )
+  {
+    using namespace std;
+    for ( size_t i = 0; i < 50; i++ )
+    {
+      vector<float> randValues;
+      generate_n(back_inserter(randValues), 16, FloatRandGen(100.f));
+
+      Ogre::Matrix3 matDxTmp;
+      Ogre::Matrix4 matDx;
+      Star::float4x4 matStar;
+
+      matDxTmp.FromAxisAngle(Ogre::Vector3(0, 0, 1), Ogre::Radian(M_PI/2));
+      matDx = matDxTmp;
+      matStar.makeRotationAxis(Star::float3(0, 0, 1), M_PI/2);
+      TS_ASSERT( isEqual(matDx, matStar) );
+      std::cerr << matDx << std::endl;
+      std::cerr << matStar << std::endl;
+    }
+  }
 
 private:
   /*****************************************************************************/
@@ -159,11 +284,11 @@ private:
   public:
     FloatRandGen(float maxV) : m_maxValue(maxV)
     {
-      std::srand(0);
     }
+
     float operator()()
     {
-      return std::rand()/float(RAND_MAX);
+      return (std::rand()/float(RAND_MAX))*m_maxValue;
     }
   };
 };
