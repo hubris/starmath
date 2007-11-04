@@ -5,5 +5,7 @@
 #include <StarMath/StarVec3.h>
 #include <StarMath/StarVec4.h>
 #include <StarMath/StarMatrix.h>
+#include <StarMath/StarQuaternion.h>
+#include <StarMath/StarUtils.h>
 
 #endif
