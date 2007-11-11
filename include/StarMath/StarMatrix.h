@@ -17,7 +17,6 @@ namespace Star
             T e31, T e32, T e33, T e34,
             T e41, T e42, T e43, T e44 );
 
-
     // access grants
     T operator () ( size_t row, size_t col ) const;
     T& operator () ( size_t row, size_t col );
@@ -456,34 +455,6 @@ namespace Star
   Matrix<T>::makeScaling(T sx, T sy, T sz)
   {
     makeScaling(Vec3<T>(sx, sy, sz));
-  }
-
-  /*****************************************************************************/
-  template <typename T>
-  void
-  Matrix<T>::makeRotationAxis(const Vec3<T> axis, T angle)
-  {
-//     Vec3<T> u = axis;
-//     u.normalize();
-//     Matrix<T> identy;
-//     identy.toIdentity();
-//     Matrix<T> S( 0,  -u.z, u.y, 0,
-//                  u.z, 0,  -u.x, 0,
-//                 -u.y, u.x, 0,   0,
-//                  0,   0,   0,   0);
-//     Matrix<T> one( 1, 1, 1, 1,
-//                    1, 1, 1, 1,
-//                    1, 1, 1, 1,
-//                    1, 1, 1, 1);
-
-//     S = u.dot(u)*identy+std::cos(angle)*(identy-identy*u.dot(u))+std::sin(angle)*S;
-//     S(3, 0) = 0;
-//     S(3, 1) = 0;
-//     S(3, 2) = 0;
-//     S(3, 3) = 1;
-
-//     *this = S;
-    //TODO: Use quaternion
   }
 
 /*****************************************************************************/

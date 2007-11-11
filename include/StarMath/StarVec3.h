@@ -5,6 +5,9 @@
 
 namespace Star
 {
+  template <typename T> class Vec3;
+  template <typename T> Vec3<T> operator *( T, const Vec3<T>& );
+
   template <typename T>
   class Vec3
   {
@@ -33,7 +36,7 @@ namespace Star
     Vec3 operator * ( T ) const;
     Vec3 operator / ( T ) const;
 
-    friend Vec3<T> operator * ( T, const Vec3<T>& );
+    template <typename T2> friend Vec3<T2> operator * ( T2, const Vec3<T2>& );
 
     bool operator == ( const Vec3& ) const;
     bool operator != ( const Vec3& ) const;
@@ -42,6 +45,8 @@ namespace Star
     T length() const;
     T normalize();
     T dot(const Vec3& a) const;
+
+    bool isNull() const;
 
   public:
     T x, y, z;
@@ -227,6 +232,14 @@ namespace Star
   Vec3<T>::dot(const Vec3& a) const
   {
     return a.x*x+a.y*y+a.z*z;
+  }
+
+/*****************************************************************************/
+  template <typename T>
+  bool
+  Vec3<T>::isNull() const
+  {
+    return isZero(x) && isZero(y) && isZero(z);
   }
 }
 

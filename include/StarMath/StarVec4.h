@@ -1,9 +1,11 @@
 #ifndef STAR_VEC4_H
 #define STAR_VEC4_H
 
-
 namespace Star
 {
+  template <typename T> class Vec4;
+  template <typename T> Vec4<T> operator *( T, const Vec4<T>& );
+
   template <typename T>
   class Vec4
   {
@@ -33,11 +35,12 @@ namespace Star
     Vec4 operator * ( T ) const;
     Vec4 operator / ( T ) const;
 
-    friend Vec4<T> operator * ( T, const Vec4<T>& );
+    template <typename T2> friend Vec4<T2> operator *( T2, const Vec4<T2>& );
 
     bool operator == ( const Vec4& ) const;
     bool operator != ( const Vec4& ) const;
 
+    bool isNull() const;
   public:
     T x, y, z, w;
   };
@@ -212,6 +215,13 @@ namespace Star
     return v.x != x || v.y != y || v.z != z || v.w != w;
   }
 
+/*****************************************************************************/
+  template <typename T>
+  bool
+  Vec4<T>::isNull() const
+  {
+    return isZero(x) && isZero(y) && isZero(z) && isZero(w);
+  }
 }
 /*****************************************************************************/
 template <typename T>

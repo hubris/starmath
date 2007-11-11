@@ -7,6 +7,8 @@
 #include <OGRE/OgreMatrix4.h>
 #include <OGRE/OgreMatrix3.h>
 
+#include "RandGen.h"
+
 class MathTestSuite : public CxxTest::TestSuite
 {
 public:
@@ -276,19 +278,4 @@ private:
           return false;
     return true;
   }
-
-  /*****************************************************************************/
-  class FloatRandGen
-  {
-    float m_maxValue;
-  public:
-    FloatRandGen(float maxV) : m_maxValue(maxV)
-    {
-    }
-
-    float operator()()
-    {
-      return (std::rand()/float(RAND_MAX))*m_maxValue;
-    }
-  };
 };

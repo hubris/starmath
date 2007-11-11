@@ -3,6 +3,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
 IF(NOT WIN32)
 add_subdirectory(ogre)
 ADD_TEST(MathTestSuite ${EXECUTABLE_OUTPUT_PATH}/testOgre)
+ADD_TEST(MathTestQuaternion ${EXECUTABLE_OUTPUT_PATH}/testQuaternionOgre)
 endif(NOT WIN32)
 
 IF(WIN32)

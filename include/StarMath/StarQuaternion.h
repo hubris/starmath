@@ -2,6 +2,7 @@
 #define STAR_QUATERNION_H
 
 #include <StarMath/StarUtils.h>
+#include <StarMath/StarMatrix.h>
 
 namespace Star
 {
@@ -15,6 +16,7 @@ namespace Star
     Quaternion() {};
     Quaternion( const T * );
     Quaternion( T x, T y, T z, T w );
+    Quaternion(const Vec3<T>& axis, const T angle);
 
     // casting
     operator T* ();
@@ -42,16 +44,24 @@ namespace Star
     bool operator != ( const Quaternion& ) const;
 
     void toIdentity();
+    Quaternion inverse() const;
 
     T norm() const;
     T normSquare() const;
     T dot( const Quaternion<T>& q ) const;
     Quaternion<T> conjugate() const;
     void toAxisAngle( Vec3<T>& axis, T& angle ) const;
+    void fromAxisAngle(const Vec3<T>& axis, const T angle);
+
+    void toRotationMatrix(Matrix<T>& rotation) const;
 
   public:
     T x, y, z, w;
   };
+
+  /*****************************************************************************/
+  typedef Quaternion<float> quaternionf;
+  typedef Quaternion<double> quaterniond;
 
   /*******************************************************************************/
   template <typename T>
@@ -67,6 +77,27 @@ namespace Star
   template <typename T>
   Quaternion<T>::Quaternion( T x, T y, T z, T w ) :x(x), y(y), z(z), w(w) {}
 
+
+  /*******************************************************************************/
+  template <typename T>
+  Quaternion<T>::Quaternion(const Vec3<T>& axis, const T angle)
+  {
+    fromAxisAngle(axis, angle);
+  }
+
+  /*******************************************************************************/
+  template <typename T>
+  Quaternion<T>::operator T* ()
+  {
+    return &x;
+  }
+
+  /*******************************************************************************/
+  template <typename T>
+  Quaternion<T>::operator const T* () const
+  {
+    return &x;
+  }
 
   /*******************************************************************************/
   template <typename T>
@@ -255,21 +286,29 @@ namespace Star
   Quaternion<T>::toAxisAngle( Vec3<T>& axis, T& angle ) const
   {
     T scale = norm();
-    if ( !isZero(scale) )
-    {
-      scale = T(1)/scale;
-      angle = T(2)*std::acos(w);
-      axis.x = x*scale;
-      axis.y = y*scale;
-      axis.z = z*scale;
-    }
-    else
-    {
-      angle = 0;
-      axis.x = 1;
-      axis.y = 0;
-      axis.z = 0;
-    }
+    assert(!isZero(scale));
+
+    scale = T(1)/scale;
+    angle = T(2)*std::acos(w);
+    axis.x = x*scale;
+    axis.y = y*scale;
+    axis.z = z*scale;
+  }
+
+  /*******************************************************************************/
+  template <typename T>
+  void
+  Quaternion<T>::fromAxisAngle(const Vec3<T>& axis, const T angle)
+  {
+    assert(!axis.isNull());
+
+    T theta = angle/T(2);
+    T s = std::sin(theta);
+
+    x = axis.x*s;
+    y = axis.y*s;
+    z = axis.z*s;
+    w = std::cos(theta);
   }
 
   /*******************************************************************************/
@@ -278,6 +317,62 @@ namespace Star
   operator * (T k, const Star::Quaternion<T>& q )
   {
     return q*k;
+  }
+
+  /*******************************************************************************/
+  template <typename T>
+  Quaternion<T>
+  Quaternion<T>::inverse() const
+  {
+    Quaternion<T> conj = conjugate();
+    return conj/((*this)*conj);
+  }
+
+  /*******************************************************************************/
+  template <typename T>
+  void
+  Quaternion<T>::toRotationMatrix(Matrix<T>& rotation) const
+  {
+    float x2=x*x;
+    float y2=y*y;
+    float z2=z*z;
+
+    rotation(0, 0) = 1 - 2*y2 - 2*z2;
+    rotation(0, 1) = 2*x*y - 2*w*z;
+    rotation(0, 2) = 2*x*z + 2*w*y;
+    rotation(0, 3) = 0;
+
+    rotation(1, 0) = 2*x*y + 2*w*z;
+    rotation(1, 1) = 1 - 2*x2 - 2*z2;
+    rotation(1, 2) = 2*y*z - 2*w*x;
+    rotation(1, 3) = 0;
+
+    rotation(2, 0) = 2*x*z - 2*w*y;
+    rotation(2, 1) = 2*y*z + 2*w*x;
+    rotation(2, 2) = 1 - 2*x2 - 2*y2;
+    rotation(2, 3) = 0;
+
+    rotation(3, 0) = rotation(3, 1) = rotation(3, 2) = 0;
+    rotation(3, 3) = 1;
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  std::ostream&
+  operator << (std::ostream& os, const Quaternion<T>& q)
+  {
+    return os << "(" << q.x << ", " << q.y <<  ", " << q.z << ", " << q.w << ")";
+  }
+
+  /*****************************************************************************/
+  //Here to avoid circular dependency
+  template <typename T>
+  void
+  Matrix<T>::makeRotationAxis(const Vec3<T> axis, T angle)
+  {
+    Quaternion<T> q;
+    q.fromAxisAngle(axis, angle);
+    q.toRotationMatrix(*this);
   }
 }
 
