@@ -11,6 +11,6 @@ public:
 
   float operator()()
   {
-    return (std::rand()/float(RAND_MAX))*m_maxValue;
+    return m_maxValue*(std::rand()/float(RAND_MAX));
   }
 };

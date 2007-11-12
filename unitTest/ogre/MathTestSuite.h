@@ -233,21 +233,27 @@ public:
   void testMatrixRotate( void )
   {
     using namespace std;
-    for ( size_t i = 0; i < 50; i++ )
+    vector<float> randValues;
+    generate_n(back_inserter(randValues), 3*50, FloatRandGen(2*M_PI));
+    for ( size_t i = 0; i < 3*49; i++ )
     {
-      vector<float> randValues;
-      generate_n(back_inserter(randValues), 16, FloatRandGen(100.f));
-
       Ogre::Matrix3 matDxTmp;
       Ogre::Matrix4 matDx;
       Star::float4x4 matStar;
 
-      matDxTmp.FromAxisAngle(Ogre::Vector3(0, 0, 1), Ogre::Radian(M_PI/2));
+      Ogre::Vector3 ogreAxis = Ogre::Vector3(randValues[i], randValues[i+1], randValues[i+2]);
+      Star::float3 starAxis = Star::float3(randValues[i], randValues[i+1], randValues[i+2]);
+      starAxis.normalize();
+      ogreAxis.normalise();
+
+      matDxTmp.FromAxisAngle(ogreAxis, Ogre::Radian(randValues[i]));
+      matDx[3][0] = matDx[3][1] = matDx[3][2] = 0;
+      matDx[3][3] = 1;
+      matDx[0][3] = matDx[1][3] = matDx[2][3] = 0;
       matDx = matDxTmp;
-      matStar.makeRotationAxis(Star::float3(0, 0, 1), M_PI/2);
+      matStar.makeRotationAxis(starAxis, randValues[i]);
+
       TS_ASSERT( isEqual(matDx, matStar) );
-      std::cerr << matDx << std::endl;
-      std::cerr << matStar << std::endl;
     }
   }
 
@@ -265,7 +271,7 @@ private:
   {
    for ( size_t j = 0; j < 4; j++)
       for ( size_t i = 0; i < 4; i++)
-        if ( std::abs(mat1[i][j]-mat2(i, j)) > std::numeric_limits<float>::epsilon()  )
+        if ( std::abs(mat1[i][j]-mat2(i, j)) > 5.*std::numeric_limits<float>::epsilon()  )
           return false;
    return true;
   }

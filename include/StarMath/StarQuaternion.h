@@ -47,7 +47,7 @@ namespace Star
     Quaternion inverse() const;
 
     T norm() const;
-    T normSquare() const;
+    T length() const;
     T dot( const Quaternion<T>& q ) const;
     Quaternion<T> conjugate() const;
     void toAxisAngle( Vec3<T>& axis, T& angle ) const;
@@ -244,15 +244,15 @@ namespace Star
   T
   Quaternion<T>::norm() const
   {
-    return std::sqrt(x*x+y*y+z*z+w*w);
+    return x*x+y*y+z*z+w*w;
   }
 
   /*******************************************************************************/
   template <typename T>
   T
-  Quaternion<T>::normSquare() const
+  Quaternion<T>::length() const
   {
-    return x*x+y*y+z*z+w*w;
+    return std::sqrt(x*x+y*y+z*z+w*w);
   }
 
   /*******************************************************************************/
@@ -285,14 +285,22 @@ namespace Star
   void
   Quaternion<T>::toAxisAngle( Vec3<T>& axis, T& angle ) const
   {
-    T scale = norm();
-    assert(!isZero(scale));
-
-    scale = T(1)/scale;
-    angle = T(2)*std::acos(w);
-    axis.x = x*scale;
-    axis.y = y*scale;
-    axis.z = z*scale;
+    T scale = std::sqrt(x*x+y*y+z*z);
+    if(!isZero(scale))
+    {
+      scale = T(1)/scale;
+      angle = T(2)*std::acos(w);
+      axis.x = x*scale;
+      axis.y = y*scale;
+      axis.z = z*scale;
+    }
+    else
+    {
+      angle = 0;
+      axis.x = 1;
+      axis.y = 0;
+      axis.z = 0;
+    }
   }
 
   /*******************************************************************************/
