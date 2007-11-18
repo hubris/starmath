@@ -105,6 +105,13 @@ public:
       ogreQuat = ogreQuat*(1.f/5.5f);
       TS_ASSERT( isEqual(starQuat, ogreQuat) );
 
+      starQuat= Star::quaternionf(&randValues[i]);
+      ogreQuat = Ogre::Quaternion(randValues[i+3], randValues[i],
+                                  randValues[i+1], randValues[i+2]);
+      starQuat = starQuat/5.5f;
+      ogreQuat = ogreQuat*(1.f/5.5f);
+      TS_ASSERT( isEqual(starQuat, ogreQuat) );
+
       TS_ASSERT( starQuat==starQuat );
       TS_ASSERT( !(starQuat!=starQuat) );
     }
@@ -191,7 +198,6 @@ public:
     Star::float3 resQuat = starQuat.rotate(point);
     TS_ASSERT(resMat == resQuat);
     TS_ASSERT(starQuat.inverse().inverse() == starQuat);
-    TS_ASSERT_EQUALS(starQuat.inverse(), starQuat);
   }
 
 private:
