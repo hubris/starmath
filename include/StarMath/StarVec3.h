@@ -45,6 +45,7 @@ namespace Star
     T length() const;
     T normalize();
     T dot(const Vec3& a) const;
+    T cross(const Vec3& a) const;
 
     bool isNull() const;
 
@@ -241,8 +242,15 @@ namespace Star
   {
     return isZero(x) && isZero(y) && isZero(z);
   }
-}
 
+  /*****************************************************************************/
+  template <typename T>
+  T
+  Vec3<T>::cross(const Vec3& a) const
+  {
+    return Vec3<T>(y*a.z-z*a.y, z*a.x-x*a.z, x*a.y-y*a.x);
+  }
+}
 
 /*****************************************************************************/
 template <typename T>

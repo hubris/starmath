@@ -40,6 +40,11 @@ namespace Star
     bool operator == ( const Vec4& ) const;
     bool operator != ( const Vec4& ) const;
 
+    // vector operation
+    T length() const;
+    T normalize();
+    T dot(const Vec4& a) const;
+
     bool isNull() const;
   public:
     T x, y, z, w;
@@ -215,13 +220,41 @@ namespace Star
     return v.x != x || v.y != y || v.z != z || v.w != w;
   }
 
-/*****************************************************************************/
+  /*****************************************************************************/
   template <typename T>
   bool
   Vec4<T>::isNull() const
   {
     return isZero(x) && isZero(y) && isZero(z) && isZero(w);
   }
+
+  /*****************************************************************************/
+  template <typename T>
+  T
+  Vec4<T>::length() const
+  {
+    return std::sqrt(dot(*this));
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  T
+  Vec4<T>::normalize()
+  {
+    T len = length();
+    *this *= T(1)/len;
+
+    return len;
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  T
+  Vec4<T>::dot(const Vec4& a) const
+  {
+    return a.x*x+a.y*y+a.z*z+a.w*w;
+  }
+
 }
 /*****************************************************************************/
 template <typename T>

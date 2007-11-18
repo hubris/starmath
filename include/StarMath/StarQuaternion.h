@@ -55,6 +55,8 @@ namespace Star
 
     void toRotationMatrix(Matrix<T>& rotation) const;
 
+    Vec3<T> rotate(const Vec3<T>&v);
+
   public:
     T x, y, z, w;
   };
@@ -362,6 +364,16 @@ namespace Star
 
     rotation(3, 0) = rotation(3, 1) = rotation(3, 2) = 0;
     rotation(3, 3) = 1;
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  Vec3<T>
+  Quaternion<T>::rotate(const Vec3<T>&v)
+  {
+    Quaternion<T> p = Quaternion<T>(v.x, v.y, v.z, T(0));
+    p = (*this)*p*inverse();
+    return Vec3<T>(p.x, p.y, p.z);
   }
 
   /*****************************************************************************/

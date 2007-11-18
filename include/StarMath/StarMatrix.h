@@ -4,6 +4,9 @@
 #include <cassert>
 #include <iostream>
 
+#include <StarMath/StarVec4.h>
+#include <StarMath/StarVec3.h>
+
 namespace Star
 {
   template <typename T>
@@ -41,6 +44,8 @@ namespace Star
     const Matrix operator - ( const Matrix& ) const;
     const Matrix operator * ( T ) const;
     const Matrix operator / ( T ) const;
+    Vec3<T> operator * ( const Vec3<T>& ) const;
+    Vec4<T> operator* ( const Vec4<T>& v ) const;
 
     /**
      * Return the determinant of the submatrix composed of rows r0, r1, r2
@@ -479,6 +484,27 @@ namespace Star
   Matrix<T>::operator != ( const Matrix<T>& v ) const
   {
     return ! ( v == *this );
+  }
+
+/*****************************************************************************/
+  template <typename T>
+  Vec3<T>
+  Matrix<T>::operator* ( const Vec3<T>& v ) const
+  {
+    return Vec3<T>(m_mat[0][0]*v.x+m_mat[0][1]*v.y+m_mat[0][2]*v.z+m_mat[0][3],
+                   m_mat[1][0]*v.x+m_mat[1][1]*v.y+m_mat[1][2]*v.z+m_mat[1][3],
+                   m_mat[2][0]*v.x+m_mat[2][1]*v.y+m_mat[2][2]*v.z+m_mat[2][3]);
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  Vec4<T>
+  Matrix<T>::operator* ( const Vec4<T>& v ) const
+  {
+    return Vec4<T>(m_mat[0][0]*v.x+m_mat[0][1]*v.y+m_mat[0][2]*v.z+m_mat[0][3]*v.w,
+                   m_mat[1][0]*v.x+m_mat[1][1]*v.y+m_mat[1][2]*v.z+m_mat[1][3]*v.w,
+                   m_mat[2][0]*v.x+m_mat[2][1]*v.y+m_mat[2][2]*v.z+m_mat[2][3]*v.w,
+                   m_mat[3][0]*v.x+m_mat[3][1]*v.y+m_mat[3][2]*v.z+m_mat[3][3]*v.w);
   }
 
 /*****************************************************************************/
