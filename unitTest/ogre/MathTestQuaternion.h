@@ -1,4 +1,5 @@
 #include <cxxtest/TestSuite.h>
+#include <cxxtest/ValueTraits.h>
 
 #include <StarMath.h>
 
@@ -9,6 +10,7 @@
 #include <OGRE/OgreQuaternion.h>
 
 #include "RandGen.h"
+#include "MathTestStarValueTraits.h"
 
 class MathTestQuaternion : public CxxTest::TestSuite
 {
@@ -189,6 +191,7 @@ public:
     Star::float3 resQuat = starQuat.rotate(point);
     TS_ASSERT(resMat == resQuat);
     TS_ASSERT(starQuat.inverse().inverse() == starQuat);
+    TS_ASSERT_EQUALS(starQuat.inverse(), starQuat);
   }
 
 private:
