@@ -209,7 +209,7 @@ namespace Star
   bool
   Vec4<T>::operator == ( const Vec4<T>& v ) const
   {
-    return v.x == x && v.y == y && v.z == z && v.w == w;
+    return isZero(x-v.x) && isZero(y-v.y) && isZero(z-v.z) && isZero(w-v.w);
   }
 
 /*****************************************************************************/

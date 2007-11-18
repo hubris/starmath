@@ -45,6 +45,7 @@ namespace Star
 
     void toIdentity();
     Quaternion inverse() const;
+    Quaternion inverseUnit() const;
 
     T norm() const;
     T length() const;
@@ -222,7 +223,7 @@ namespace Star
   Quaternion<T>::operator / ( T k ) const
   {
     T tmp = T(1)/k;
-    return Quaternion<T>(x*tmp, y*tmp, z*tmp, k*tmp);
+    return Quaternion<T>(x*tmp, y*tmp, z*tmp, w*tmp);
   }
 
   /*******************************************************************************/
@@ -230,7 +231,7 @@ namespace Star
   bool
   Quaternion<T>::operator == ( const Quaternion& q ) const
   {
-    return x == q.x && y == q.y && z == q.z && w == q.w;
+    return isZero(x-q.x) && isZero(y-q.y) && isZero(z-q.z) && isZero(w-q.w);
   }
 
   /*******************************************************************************/
@@ -335,7 +336,16 @@ namespace Star
   Quaternion<T>::inverse() const
   {
     Quaternion<T> conj = conjugate();
-    return conj/((*this)*conj);
+    return conj/dot(*this);
+  }
+
+  /*******************************************************************************/
+  template <typename T>
+  Quaternion<T>
+  Quaternion<T>::inverseUnit() const
+  {
+    assert(isZero(norm()-T(1)));
+    return conjugate();
   }
 
   /*******************************************************************************/
@@ -372,7 +382,7 @@ namespace Star
   Quaternion<T>::rotate(const Vec3<T>&v)
   {
     Quaternion<T> p = Quaternion<T>(v.x, v.y, v.z, T(0));
-    p = (*this)*p*inverse();
+    p = (*this)*p*inverseUnit();
     return Vec3<T>(p.x, p.y, p.z);
   }
 

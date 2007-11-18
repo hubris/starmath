@@ -197,7 +197,7 @@ namespace Star
   bool
   Vec3<T>::operator == ( const Vec3<T>& v ) const
   {
-    return v.x == x && v.y == y && v.z == z;
+    return isZero(x-v.x) && isZero(y-v.y) && isZero(z-v.z);
   }
 
 /*****************************************************************************/

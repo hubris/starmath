@@ -8,7 +8,7 @@ namespace Star
 {
   template<typename T> bool isZero(T val)
   {
-    return std::abs(val) < std::numeric_limits<T>::epsilon();
+    return std::abs(val) <= std::numeric_limits<T>::epsilon();
   }
 }
 

@@ -174,6 +174,23 @@ public:
     }
   }
 
+  void testRotation()
+  {
+    Star::quaternionf starQuat;
+    Star::float3 axis(5, 3, 2.5);
+    axis.normalize();
+    starQuat.fromAxisAngle(axis, M_PI/4);
+
+    Star::float4x4 rotMat;
+    starQuat.toRotationMatrix(rotMat);
+
+    Star::float3 point(1, 1, 1);
+    Star::float3 resMat = rotMat*point;
+    Star::float3 resQuat = starQuat.rotate(point);
+    TS_ASSERT(resMat == resQuat);
+    TS_ASSERT(starQuat.inverse().inverse() == starQuat);
+  }
+
 private:
   /*****************************************************************************/
   bool isEqual(const Star::quaternionf& a1, const Ogre::Quaternion& a2)
