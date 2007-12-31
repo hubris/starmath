@@ -8,55 +8,164 @@ namespace Star
   template <typename T> class Vec3;
   template <typename T> Vec3<T> operator *( T, const Vec3<T>& );
 
+  /**
+   * A 3D vector class.
+   */
   template <typename T>
   class Vec3
   {
   public:
+    /**
+     * Constructor.
+     */
     Vec3() {};
+
+    /**
+     * Construct a 3D vector with the specified values.
+     */
     Vec3( const T * );
+
+    /**
+     * Construct a 3D vector with the specified values.
+     */
     Vec3( T x, T y, T z );
 
-    // casting
+    /**
+     * Get a pointer on the vector values.
+     */
     operator T* ();
+
+    /**
+     * Get a constant pointer on the vector values.
+     */
     operator const T* () const;
 
-    // assignment operators
+    /**
+     * Addition.
+     */
     Vec3& operator += ( const Vec3& );
+
+    /**
+     * Substraction.
+     */
     Vec3& operator -= ( const Vec3& );
+
+    /**
+     * Scalar multiplication.
+     */
     Vec3& operator *= ( T );
+
+    /**
+     * Scalar division.
+     */
     Vec3& operator /= ( T );
 
-    // unary operators
+    /**
+     * Nop.
+     */
     Vec3 operator + () const;
+
+    /**
+     * Return a vector with opposite values.
+     */
     Vec3 operator - () const;
 
-    // binary operators
+    /**
+     * Addition.
+     */
     Vec3 operator + ( const Vec3& ) const;
+
+    /**
+     * Substraction.
+     */
     Vec3 operator - ( const Vec3& ) const;
+
+    /**
+     * Scalar multiplication.
+     */
     Vec3 operator * ( T ) const;
+
+    /**
+     * Scalar division.
+     */
     Vec3 operator / ( T ) const;
 
+    /**
+     * Scalar multiplication.
+     */
     template <typename T2> friend Vec3<T2> operator * ( T2, const Vec3<T2>& );
 
+    /**
+     * Equality check. Use std's epsilon.
+     */
     bool operator == ( const Vec3& ) const;
+
+    /**
+     * Inequality check. Use std's epsilon.
+     */
     bool operator != ( const Vec3& ) const;
 
-    // vector operation
+    /**
+     * Compute the length of the vector.
+     */
     T length() const;
-    T normalize();
-    T dot(const Vec3& a) const;
-    T cross(const Vec3& a) const;
 
+    /**
+     * Normalize the vector.
+     * @return The vector length
+     */
+    T normalize();
+
+    /**
+     * Dot product.
+     */
+    T dot(const Vec3& a) const;
+
+    /**
+     * Cross product.
+     */
+    Vec3<T> cross(const Vec3& a) const;
+
+    /**
+     * Check for null vector.
+     */
     bool isNull() const;
 
   public:
-    T x, y, z;
+    /**
+     * x coordinate.
+     */
+    T x;
+    /**
+     * y coordinate.
+     */
+    T y;
+    /**
+     * z coordinate.
+     */
+    T z;
   };
 
 /*****************************************************************************/
+
+  /**
+   * A 3D float vector.
+   */
   typedef Vec3<float> float3;
+
+  /**
+   * A 3D double vector.
+   */
   typedef Vec3<double> double3;
+
+  /**
+   * A 3D int vector.
+   */
   typedef Vec3<int> int3;
+
+  /**
+   * A 3D unsigned int vector.
+   */
   typedef Vec3<unsigned int> uint3;
 
 /*****************************************************************************/
@@ -245,7 +354,7 @@ namespace Star
 
   /*****************************************************************************/
   template <typename T>
-  T
+  Vec3<T>
   Vec3<T>::cross(const Vec3& a) const
   {
     return Vec3<T>(y*a.z-z*a.y, z*a.x-x*a.z, x*a.y-y*a.x);
@@ -253,6 +362,10 @@ namespace Star
 }
 
 /*****************************************************************************/
+
+/**
+ * ostream operator for vectors
+ */
 template <typename T>
 std::ostream&
 operator << (std::ostream& os, const Star::Vec3<T>& s)

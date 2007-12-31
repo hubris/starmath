@@ -9,53 +9,172 @@ namespace Star
   //template <typename T> class Quaternion;
   //template <typename T> Quaternion<T> operator*(T, const Quaternion<T>& );
 
+  /**
+   * A quaternion class.
+   */
   template <typename T>
   class Quaternion
   {
   public:
+    /**
+     * Constructor with undefined values.
+     */
     Quaternion() {};
+
+    /**
+     * Constructor with the specified 4 values.
+     */
     Quaternion( const T * );
+
+    /**
+     * Constructor.
+     */
     Quaternion( T x, T y, T z, T w );
+
+    /**
+     * Construct a quaternion representing a rotation.
+     * @param axis is the rotation axis
+     * @param angle is in radian
+     */
     Quaternion(const Vec3<T>& axis, const T angle);
 
-    // casting
+    /**
+     * Convert to a pointer.
+     */
     operator T* ();
+
+    /**
+     * Convert to a constant pointer.
+     */
     operator const T* () const;
 
-    // assignment operators
+    /**
+     * Addition
+     */
     Quaternion& operator += ( const Quaternion& );
+
+    /**
+     * Substraction.
+     */
     Quaternion& operator -= ( const Quaternion& );
+
+    /**
+     * Multiplication.
+     */
     Quaternion& operator *= ( const Quaternion& );
+
+    /**
+     * Scalar multiplication
+     */
     Quaternion& operator *= ( T );
+
+    /**
+     * Scalar division
+     */
     Quaternion& operator /= ( T );
 
-    // unary operators
+    /**
+     * Nop.
+     */
     Quaternion operator + () const;
+
+    /**
+     * Return a quaternion with negated values.
+     */
     Quaternion operator - () const;
 
-    // binary operators
+    /**
+     * Addition.
+     */
     Quaternion operator + ( const Quaternion& ) const;
+
+    /**
+     * Substraction.
+     */
     Quaternion operator - ( const Quaternion& ) const;
+
+    /**
+     * Multiplication.
+     */
     Quaternion operator * ( const Quaternion& ) const;
+
+    /**
+     * Scalar multiplication.
+     */
     Quaternion operator * ( T ) const;
+
+    /**
+     * Scalar division.
+     */
     Quaternion operator / ( T ) const;
 
+    /**
+     * Equality check. Use std's epsilon.
+     */
     bool operator == ( const Quaternion& ) const;
+
+    /**
+     * Inequality check. Use std's epsilon.
+     */
     bool operator != ( const Quaternion& ) const;
 
+    /**
+     * Convert to identity quaternion
+     */
     void toIdentity();
+
+    /**
+     * Inverse quaternion.
+     */
     Quaternion inverse() const;
+
+    /**
+     * Inverse an unit quaternion.
+     */
     Quaternion inverseUnit() const;
 
+    /**
+     * Compute the norm (squared length).
+     */
     T norm() const;
+
+    /**
+     * Compute the length
+     */
     T length() const;
+
+    /**
+     * Dot product.
+     */
     T dot( const Quaternion<T>& q ) const;
+
+    /**
+     * Compute the conjugate.
+     */
     Quaternion<T> conjugate() const;
+
+    /**
+     * Get the axis and the angle of the rotation represented
+     * by this quaternion.
+     * @param axis is the computed rotation axis
+     * @param angle is the computed rotation angle in radian
+     */
     void toAxisAngle( Vec3<T>& axis, T& angle ) const;
+
+    /**
+     * Construct a quaternion representing a rotation.
+     */
     void fromAxisAngle(const Vec3<T>& axis, const T angle);
 
+    /**
+     * Convert the rotation represented by this quaternion into
+     * a 4x4 matrix.
+     */
     void toRotationMatrix(Matrix<T>& rotation) const;
 
+    /**
+     * Rotate the specified vector with this quaternion.
+     */
     Vec3<T> rotate(const Vec3<T>&v);
 
   public:

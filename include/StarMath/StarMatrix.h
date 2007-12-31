@@ -9,42 +9,121 @@
 
 namespace Star
 {
+  /**
+   * A row-major 4x4 matrix class. Implement a set of matrix operations.
+   */
   template <typename T>
   class Matrix
   {
   public:
+    /**
+     * Construct an unitialised 4x4 matrix.
+     */
     Matrix() {};
+
+    /**
+     * Construct a 4x4 matrix with the specified values (row major).
+     */
     Matrix( const T * );
+
+    /**
+     * Construct a 4x4 matrix with the specified values.
+     */
     Matrix( T e11, T e12, T e13, T e14,
             T e21, T e22, T e23, T e24,
             T e31, T e32, T e33, T e34,
             T e41, T e42, T e43, T e44 );
 
-    // access grants
+    /**
+     * Access operator. Acces is done in row major order (y,x).
+     */
     T operator () ( size_t row, size_t col ) const;
+
+    /**
+     * Access operator. Acces is done in row major order (y,x).
+     */
     T& operator () ( size_t row, size_t col );
 
+    /**
+     * Return a pointer to the matrix values.
+     */
     T* ptr();
+
+    /**
+     * Return a const pointer to the matrix values.
+     */
     const T* constPtr() const;
 
-    // assignment operators
+    /**
+     * Matrix multiplication.
+     */
     Matrix& operator *= ( const Matrix& );
+
+    /**
+     * Matrix addition
+     */
     Matrix& operator += ( const Matrix& );
+
+    /**
+     * Matrix substraction.
+     */
     Matrix& operator -= ( const Matrix& );
+
+    /**
+     * Matrix scalar multiplication
+     */
     Matrix& operator *= ( T );
+
+    /**
+     * Matrix scalar division
+     */
     Matrix& operator /= ( T );
 
-    // unary operators
+    /**
+     * Nop
+     */
     Matrix operator + () const;
+
+    /**
+     * Negate the all matrix values
+     */
     Matrix operator - () const;
 
-    // binary operators
+    /**
+     * Matrix multiplication.
+     */
     const Matrix operator * ( const Matrix& ) const;
+
+    /**
+     * Matrix addition
+     */
     const Matrix operator + ( const Matrix& ) const;
+
+    /**
+     * Matrix substraction.
+     */
     const Matrix operator - ( const Matrix& ) const;
+
+    /**
+     * Matrix scalar multiplication.
+     */
     const Matrix operator * ( T ) const;
+
+    /**
+     * Matrix scalar division
+     */
     const Matrix operator / ( T ) const;
+
+    /**
+     * Transform the specified 3D vector.
+     */
     Vec3<T> operator * ( const Vec3<T>& ) const;
+
+    /**
+     * Transform the specified 4D vector.
+     * @param v is the vector to transform
+     * @return A transformed vector
+     */
     Vec4<T> operator* ( const Vec4<T>& v ) const;
 
     /**
@@ -52,19 +131,66 @@ namespace Star
      * and columns c0, c1, c2
      */
     T minor4(size_t r0, size_t r1, size_t r2, size_t c0, size_t c1, size_t c2) const;
+
+    /**
+     * Compute the matrix adjoint.
+     * @see http://en.wikipedia.org/wiki/Adjugate_matrix
+     */
     Matrix adjoint4() const;
+
+    /**
+     * Compute the matrix determinant.
+     */
     T determinant() const;
+
+    /**
+     * Compute the matrix inverse.
+     * You must check if the matrix is inversible.
+     */
     Matrix inverse() const;
+
+    /**
+     * Compute the matrix inverse.
+     * You must check if the matrix is inversible.
+     * @param determinant is the previously computed matrix's determinant
+     */
     Matrix inverse(T& determinant) const;
+
+    /**
+     * Compute the matrix transpose.
+     */
     Matrix transpose() const;
 
-    // transformations
+    /**
+     * Create a translation matrix.
+     */
     void makeTranslation(T x, T y, T z);
+
+    /**
+     * Create a translation matrix.
+     */
     void makeTranslation(const Vec3<T> &tr);
+
+    /**
+     * Create a scaling matrix.
+     */
     void makeScaling(const Vec3<T> &scale);
+
+    /**
+     * Create a scaling matrix.
+     */
     void makeScaling(T sx, T sy, T sz);
+
+    /**
+     * Create a rotation matrix.
+     * @param axis is the rotation axis
+     * @param angle is the angle in radian
+     */
     void makeRotationAxis(const Vec3<T> axis, T angle);
 
+    /**
+     * Matrix multiplication with a scalar.
+     */
     friend Matrix operator * ( T k, const Matrix& v)
     {
       return Matrix(k*v(0,0), k*v(0,1), k*v(0,2), k*v(0,3),
@@ -73,9 +199,22 @@ namespace Star
                     k*v(3,0), k*v(3,1), k*v(3,2), k*v(3,3));
     }
 
+    /**
+     * Check for exact equality.
+     * Doesn't take float imprecesion in account.
+     */
     bool operator == ( const Matrix& ) const;
+
+
+    /**
+     * Check for exact inequality.
+     * Doesn't take float imprecesion in account.
+     */
     bool operator != ( const Matrix& ) const;
 
+    /**
+     * Create an identity matrix.
+     */
     void toIdentity();
   private:
     T m_mat[4][4];
@@ -152,6 +291,7 @@ namespace Star
 
     return *this;
   }
+
 /*****************************************************************************/
   template <typename T>
   Matrix<T>&
@@ -523,9 +663,24 @@ namespace Star
   }
 
 /*****************************************************************************/
+  /**
+   * A 4x4 matrix with float values.
+   */
   typedef Matrix<float> float4x4;
+
+  /**
+   * A 4x4 matrix with double values.
+   */
   typedef Matrix<double> double4x4;
+
+  /**
+   * A 4x4 matrix with int values.
+   */
   typedef Matrix<int> int4x4;
+
+  /**
+   * A 4x4 matrix with uint values.
+   */
   typedef Matrix<unsigned int> uint4x4;
 }
 #endif
