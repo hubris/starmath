@@ -140,8 +140,9 @@ public:
       ogreMatCopy(matDx, &randValues[0]);
 
       Star::float4x4 matStar(&randValues[0]);
-
-      TS_ASSERT(matStar.determinant() == matDx.determinant());
+      float A = matStar.determinant();
+      float B = matDx.determinant();
+      TS_ASSERT(fabs((A-B)/B) < RELATIVE_TOLERANCE);
     }
   }
 
@@ -258,6 +259,8 @@ public:
   }
 
 private:
+  static const float RELATIVE_TOLERANCE = 0.001;
+
   /*****************************************************************************/
   void ogreMatCopy(Ogre::Matrix4& mat1, float*data)
   {
@@ -271,7 +274,7 @@ private:
   {
    for ( size_t j = 0; j < 4; j++)
       for ( size_t i = 0; i < 4; i++)
-        if ( std::abs(mat1[i][j]-mat2(i, j)) > 5.*std::numeric_limits<float>::epsilon()  )
+        if ( std::abs((mat1[i][j]-mat2(i, j))/mat2(i, j)) > RELATIVE_TOLERANCE  )
           return false;
    return true;
   }
@@ -279,9 +282,9 @@ private:
   /*****************************************************************************/
   bool isEqual(const float* a1, const float* a2, size_t n)
   {
-      for ( size_t i = 0; i < n; i++)
-        if ( std::abs(a1[i]-a2[i]) > std::numeric_limits<float>::epsilon()  )
-          return false;
+    for ( size_t i = 0; i < n; i++)
+      if ( std::abs((a1[i]-a2[i])/a2[i]) > RELATIVE_TOLERANCE )
+        return false;
     return true;
   }
 };
