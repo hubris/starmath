@@ -1,6 +1,6 @@
 FIND_PATH(STARMATH_INCLUDE_DIR StarMath.h
-                               $ENV{STARMATH_DIR}/include
 			       ${PROJECT_SOURCE_DIR}/include
+                               $ENV{STARMATH_DIR}/include
 			       /usr/include/SDL
     			       /usr/local/include/SDL
 )
@@ -11,6 +11,7 @@ if(EXISTS ${STARMATH_INCLUDE_DIR})
 endif(EXISTS ${STARMATH_INCLUDE_DIR})
 
 FIND_LIBRARY(STARMATH_LIBRARY StarMath
+                              ${CMAKE_BINARY_DIR}/lib
                               $ENV{STARMATH_DIR}/lib
 			      /usr/lib
     			      /usr/local/lib
