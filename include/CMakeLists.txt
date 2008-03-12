@@ -7,4 +7,5 @@ install(FILES StarMath/StarMatrix.h
 	      StarMath/StarVec2.h
 	      StarMath/StarVec3.h
 	      StarMath/StarVec4.h
+	      StarMath/StarPlane.h
               DESTINATION include/StarMath)

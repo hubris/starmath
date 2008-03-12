@@ -1,8 +1,11 @@
 CXXTEST_GENERATE_RUNNER(MathTestSuite.h MathTestSuiteRunner.cpp)
 CXXTEST_GENERATE_RUNNER(MathTestQuaternion.h MathTestQuaternion.cpp)
+CXXTEST_GENERATE_RUNNER(MathTestPlane.h MathTestPlane.cpp)
 
 add_executable(testOgre MathTestSuiteRunner.cpp)
 add_executable(testQuaternionOgre MathTestQuaternion.cpp)
+add_executable(testPlaneOgre MathTestPlane.cpp)
 
 target_link_libraries(testOgre StarMath OgreMain)
 target_link_libraries(testQuaternionOgre StarMath OgreMain)
+target_link_libraries(testPlaneOgre StarMath OgreMain)
