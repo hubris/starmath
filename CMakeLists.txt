@@ -19,6 +19,10 @@ include(cmake/FindStarMath.cmake)
 include(cmake/FindCxxTest.cmake)
 include(FindDoxygen)
 
+#if(NOT CXXTEST_FOUND)
+#   message(FATAL_ERROR "CxxTest include directory not found")
+#endif(NOT CXXTEST_FOUND)
+
 if(NOT STARMATH_INCLUDE_FOUND)
   message(FATAL_ERROR "StarMath include directory not found")
 endif(NOT STARMATH_INCLUDE_FOUND)
@@ -26,10 +30,9 @@ endif(NOT STARMATH_INCLUDE_FOUND)
 set(STARMATH_LIB "StarMath")
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
-include_directories (${STARMATH_INCLUDE_DIR})
+include_directories (${STARMATH_INCLUDE_DIR} ${CXXTEST_INCLUDE_DIR})
 add_subdirectory(src)
 add_subdirectory(unitTest)
-add_subdirectory(include)
 
 if (DOXYGEN_FOUND)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)

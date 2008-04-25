@@ -1,5 +1,15 @@
 INCLUDE(MacroAddFileDependencies)
 
+FIND_PATH(CXXTEST_INCLUDE_DIR Mock.h
+			       /usr/include/cxxtest
+    			       /usr/local/include/cxxtest
+)
+
+set(CXXTEST_FOUND "NO")
+if(EXISTS ${CXXTEST_INCLUDE_DIR})
+	set(CXXTEST_INCLUDE_FOUND "YES")
+endif(EXISTS ${CXXTEST_INCLUDE_DIR})
+
 set(CXXTEST_EXECUTABLE cxxtestgen.py)
 MACRO (CXXTEST_GENERATE_RUNNER infile outfile )
   GET_FILENAME_COMPONENT(infullpath ${infile} ABSOLUTE)
