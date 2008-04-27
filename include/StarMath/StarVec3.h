@@ -2,6 +2,7 @@
 #define STAR_VEC3_H
 
 #include <cmath>
+#include <iostream>
 
 namespace Star
 {

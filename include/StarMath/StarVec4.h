@@ -1,6 +1,8 @@
 #ifndef STAR_VEC4_H
 #define STAR_VEC4_H
 
+#include <StarMath/StarVec3.h>
+
 namespace Star
 {
   template <typename T> class Vec4;
