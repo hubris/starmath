@@ -436,7 +436,7 @@ namespace Star
   bool
   Matrix<T>::operator == ( const Matrix<T>& v ) const
   {
-    return memcmp(&m_mat[0][0], &v.m_mat[0][0], 16*sizeof(float)) == 0;
+    return memcmp(&m_mat[0][0], &v.m_mat[0][0], 16*sizeof(T)) == 0;
   }
 
 /*****************************************************************************/
