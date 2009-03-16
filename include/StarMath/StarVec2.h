@@ -2,6 +2,7 @@
 #define STARVEC2_H
 
 #include <iostream>
+#include <cmath>
 
 namespace Star
 {
@@ -40,6 +41,22 @@ namespace Star
 
     bool operator == ( const Vec2<T>& ) const;
     bool operator != ( const Vec2<T>& ) const;
+
+    /**
+     * Compute the length of the vector.
+     */
+    T length() const;
+
+    /**
+     * Normalize the vector.
+     * @return The vector length
+     */
+    T normalize();
+
+    /**
+     * Dot product.
+     */
+    T dot(const Vec2& a) const;
 
   public:
     T x, y;
@@ -194,7 +211,35 @@ namespace Star
   {
     return v.x != x || v.y != y;
   }
+
+  /*****************************************************************************/
+  template <typename T>
+  T
+  Vec2<T>::length() const
+  {
+    return std::sqrt(dot(*this));
+  }
+
+/*****************************************************************************/
+  template <typename T>
+  T
+  Vec2<T>::normalize()
+  {
+    T len = length();
+    *this *= T(1)/len;
+
+    return len;
+  }
+
+/*****************************************************************************/
+  template <typename T>
+  T
+  Vec2<T>::dot(const Vec2& a) const
+  {
+    return a.x*x+a.y*y;
+  }
 }
+
 
 /*****************************************************************************/
 template <typename T>
