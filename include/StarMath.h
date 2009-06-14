@@ -9,5 +9,6 @@
 #include <StarMath/StarQuaternion.h>
 #include <StarMath/StarPlane.h>
 #include <StarMath/StarUtils.h>
+#include <StarMath/StarBox.h>
 
 #endif
