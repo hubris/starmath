@@ -131,6 +131,17 @@ namespace Star
   {
     return m_min;
   }
+
+}
+
+/**
+ * ostream operator for vectors
+ */
+template <typename T>
+std::ostream&
+operator << (std::ostream& os, const Star::Box<T>& b)
+{
+  return os << "(" << b.getMin() << " - " << b.getMax() << ")";
 }
 
 #endif
