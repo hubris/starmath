@@ -32,7 +32,7 @@ namespace Star
     void setMinMax(const Vec3<T>& min, const Vec3<T>& max);
 
     /**
-     * Extend the box     
+     * Extend the box
      * @param pt is the point to add to the box
      */
     void extends(const Vec3<T>& pt);
@@ -45,7 +45,7 @@ namespace Star
 
   private:
     Vec3<T> m_min;
-    Vec3<T> m_max;    
+    Vec3<T> m_max;
   };
 
 
@@ -59,12 +59,12 @@ namespace Star
   template<typename T>
   Box<T>::Box()
   {
-    T min = std::numeric_limits<T>::min();
-    T max = std::numeric_limits<T>::max();
-    if(!std::numeric_limits<T>::isReal())
-      setMinMax(min, max);
+    T tmin = std::numeric_limits<T>::min();
+    T tmax = std::numeric_limits<T>::max();
+    if(!std::numeric_limits<T>::is_integer)
+      setMinMax(Vec3<T>(tmin, tmin, tmin), Vec3<T>(tmax, tmax, tmax));
     else
-      setMinMax(-max, max);
+      setMinMax(Vec3<T>(-tmax, -tmax, -tmax), Vec3<T>(tmax, tmax, tmax));
   }
 
   /*******************************************************************************/
@@ -77,7 +77,7 @@ namespace Star
   /*******************************************************************************/
   template<typename T>
   void
-  Box<T>::setMinMax(const Vec3<T>& min, const Vec3<T>& max)    
+  Box<T>::setMinMax(const Vec3<T>& min, const Vec3<T>& max)
   {
     m_min = min;
     m_max = max;
