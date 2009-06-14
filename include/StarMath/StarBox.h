@@ -12,6 +12,8 @@ namespace Star
   class Box
   {
   public:
+    typedef Vec3<T> Dim;
+
     /**
      * Create an empty box.
      */
@@ -29,19 +31,31 @@ namespace Star
      * @param min the box min
      * @param max the box max
      */
-    void setMinMax(const Vec3<T>& min, const Vec3<T>& max);
+    inline void setMinMax(const Vec3<T>& min, const Vec3<T>& max);
 
     /**
      * Extend the box
      * @param pt is the point to add to the box
      */
-    void extends(const Vec3<T>& pt);
+    inline void extends(const Vec3<T>& pt);
 
     /**
      * Get the Box size
      * @return the Box's size
      */
-    Vec3<T> getSize() const;
+    inline Vec3<T> getSize() const;
+
+    /**
+     * Get the Box min
+     * @return the Box's min
+     */
+    inline const Vec3<T>& getMin() const;
+
+    /**
+     * Get the Box max
+     * @return the Box's max
+     */
+    inline const Vec3<T>& getMax() const;
 
   private:
     Vec3<T> m_min;
@@ -100,6 +114,22 @@ namespace Star
   Box<T>::getSize() const
   {
     return m_max-m_min;
+  }
+
+  /*******************************************************************************/
+  template<typename T>
+  const Vec3<T>&
+  Box<T>::getMax() const
+  {
+    return m_max;
+  }
+
+  /*******************************************************************************/
+  template<typename T>
+  const Vec3<T>&
+  Box<T>::getMin() const
+  {
+    return m_min;
   }
 }
 
