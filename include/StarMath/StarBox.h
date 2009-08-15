@@ -57,6 +57,12 @@ namespace Star
      */
     inline const Vec3<T>& getMax() const;
 
+    /**
+     * Check for inclusion of vector pos
+     * @return true if pos is in [min,max[
+     */
+    inline bool contains(const Vec3<T>& pos) const;
+
   private:
     Vec3<T> m_min;
     Vec3<T> m_max;
@@ -132,6 +138,17 @@ namespace Star
     return m_min;
   }
 
+  /*******************************************************************************/
+  template<typename T>
+  bool
+  Box<T>::contains(const Vec3<T>& pos) const
+  {
+    for(size_t i = 0; i < 3; i++) {
+      if (pos[i] < m_min[i] || pos[i] >= m_max[i])
+        return false;
+    }
+    return true;
+  }
 }
 
 /**
