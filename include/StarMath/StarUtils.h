@@ -20,6 +20,11 @@ namespace Star
   {
     return val*T(180)/T(M_PI);
   }
+
+  template<typename T> T lerp(const T& a, const T& b, const T& t)
+  {
+    return a+t*(b-a);
+  }
 }
 
 #endif

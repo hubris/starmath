@@ -22,6 +22,12 @@ namespace Star
     Vec3() {};
 
     /**
+     * Explicit cast
+     */
+    template<typename T2>
+    explicit Vec3(const Vec3<T2>& a) { x = T2(a.x); y = T2(a.y); z = T2(a.z); };
+
+    /**
      * Construct a 3D vector with the specified values.
      */
     Vec3( const T * );
@@ -90,6 +96,16 @@ namespace Star
      * Scalar division.
      */
     Vec3 operator / ( T ) const;
+
+    /**
+     * Component wise division.
+     */
+    Vec3 operator / ( const Vec3& ) const;
+
+    /**
+     * Component wise division.
+     */
+    Vec3 operator * ( const Vec3& ) const;
 
     /**
      * Scalar multiplication.
@@ -351,6 +367,22 @@ namespace Star
   Vec3<T>::isNull() const
   {
     return isZero(x) && isZero(y) && isZero(z);
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  Vec3<T>
+  Vec3<T>::operator/(const Vec3& a) const
+  {
+    return Vec3<T>(x/a.x, y/a.y, z/a.z);
+  }
+
+  /*****************************************************************************/
+  template <typename T>
+  Vec3<T>
+  Vec3<T>::operator*(const Vec3& a) const
+  {
+    return Vec3<T>(x*a.x, y*a.y, z*a.z);
   }
 
   /*****************************************************************************/

@@ -20,6 +20,18 @@ namespace Star
     Box();
 
     /**
+     * explicit cast
+     */
+    template <typename T2>
+    explicit Box(const Box<T2>& b)
+    {
+      const Vec3<T2>& bMin = b.getMin();
+      const Vec3<T2>& bMax = b.getMax();
+      m_min = Vec3<T>(T2(bMin[0]), T2(bMin[1]), T2(bMin[2]));
+      m_max = Vec3<T>(T2(bMax[0]), T2(bMax[1]), T2(bMax[2]));
+    }
+
+    /**
      * Create a Box. min is included but not max.
      * @param min the box min
      * @param max the box max
