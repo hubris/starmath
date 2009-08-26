@@ -5,6 +5,7 @@
 
 #include <limits>
 #include <algorithm>
+#include <vector>
 
 namespace Star
 {
@@ -74,6 +75,11 @@ namespace Star
      * @return true if pos is in [min,max[
      */
     inline bool contains(const Vec3<T>& pos) const;
+
+    /**
+     * Return indexed vertices representation of the box
+     */
+    inline void getGeometry(std::vector<Vec3<T> >& vertices, std::vector<short>& indices) const;
 
   private:
     Vec3<T> m_min;
@@ -160,6 +166,36 @@ namespace Star
         return false;
     }
     return true;
+  }
+
+  /*******************************************************************************/
+  template<typename T>
+  void
+  Box<T>::getGeometry(std::vector<Vec3<T> >& vertices, std::vector<short>& indices) const
+  {
+    vertices.push_back(Vec3<T>(m_min[0], m_min[1], m_min[2]));
+    vertices.push_back(Vec3<T>(m_max[0], m_min[1], m_min[2]));
+    vertices.push_back(Vec3<T>(m_max[0], m_max[1], m_min[2]));
+    vertices.push_back(Vec3<T>(m_min[0], m_max[1], m_min[2]));
+
+    vertices.push_back(Vec3<T>(m_min[0], m_min[1], m_max[2]));
+    vertices.push_back(Vec3<T>(m_max[0], m_min[1], m_max[2]));
+    vertices.push_back(Vec3<T>(m_max[0], m_max[1], m_max[2]));
+    vertices.push_back(Vec3<T>(m_min[0], m_max[1], m_max[2]));
+
+    static short idx[] = { 1, 0, 3,
+                           2, 1, 3,
+                           4, 5, 7,
+                           5, 6, 7,
+                           0, 4, 7,
+                           0, 7, 3,
+                           5, 1, 6,
+                           6, 1, 2,
+                           0, 1, 5,
+                           0, 5, 4,
+                           2, 3, 6,
+                           6, 3, 7 };
+    indices.assign(idx, idx+sizeof(idx)/sizeof(idx[0]));
   }
 }
 
