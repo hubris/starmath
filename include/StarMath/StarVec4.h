@@ -57,6 +57,7 @@ namespace Star
   typedef Vec4<double> double4;
   typedef Vec4<int> int4;
   typedef Vec4<unsigned int> uint4;
+  typedef Vec4<unsigned char> uchar4;
 
 /*****************************************************************************/
   template <typename T>
