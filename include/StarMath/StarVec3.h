@@ -25,7 +25,7 @@ namespace Star
      * Explicit cast
      */
     template<typename T2>
-    explicit Vec3(const Vec3<T2>& a) { x = T2(a.x); y = T2(a.y); z = T2(a.z); };
+    explicit Vec3(const Vec3<T2>& a) { x = T2(a.x); y = T2(a.y); z = T2(a.z); }
 
     /**
      * Construct a 3D vector with the specified values.
@@ -184,6 +184,8 @@ namespace Star
    * A 3D unsigned int vector.
    */
   typedef Vec3<unsigned int> uint3;
+
+  typedef Vec3<unsigned char> uchar3;
 
 /*****************************************************************************/
   template <typename T>
