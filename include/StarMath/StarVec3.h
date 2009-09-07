@@ -148,6 +148,11 @@ namespace Star
      */
     bool isNull() const;
 
+    /**
+     * Return x*y*z
+     */
+    T getSize() const {  return x*y*z; }
+
   public:
     /**
      * x coordinate.
