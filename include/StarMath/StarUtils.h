@@ -11,6 +11,11 @@ namespace Star
         return std::abs(val) <= std::numeric_limits<T>::epsilon();
     }
 
+    template<typename T> inline T upDiv(T a, T b)
+    {
+        return T(ceil(double(a)/double(b)));
+    }
+
     template<typename T> inline T deg2Rad(T val)
     {
         return val*M_PI/T(180);
