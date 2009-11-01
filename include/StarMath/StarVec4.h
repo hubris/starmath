@@ -3,6 +3,9 @@
 
 #include <StarMath/StarVec3.h>
 
+#include <StarMath/StarUtils.h>
+#include <cassert>
+
 namespace Star
 {
   template <typename T> class Vec4;
@@ -41,6 +44,80 @@ namespace Star
 
     bool operator == ( const Vec4& ) const;
     bool operator != ( const Vec4& ) const;
+
+    Vec4 clamp(const Vec4& a, const Vec4& b) const
+    {
+        return Vec4(Star::clamp(x, a[0], b[0]),
+                    Star::clamp(y, a[1], b[1]),
+                    Star::clamp(z, a[2], b[2]),
+                    Star::clamp(w, a[3], b[3]));
+    }
+      /**
+       * Convert HSV color into RGB color
+       * @param  hsv HSV color with h in [0,360] and s,v in [0,1]
+       * @return RGBA color in [0,1], alpha is not changed
+       */
+      Vec4 HsvToRgb() const
+      {
+          int hi = (int)(this->x / 60.0f);
+          float f = this->x / 60.0f - hi;
+          float p = this->z * (1.0f - this->y);
+          float q = this->z * (1.0f - f * this->y);
+          float t = this->z * (1.0f - (1.0f - f) * this->y);
+
+          switch (hi % 6)
+          {
+          case 0:
+              return Vec4(this->z, t, p, this->w);
+          case 1:
+              return Vec4(q, this->z, p, this->w);
+          case 2:
+              return Vec4(p, this->z, t, this->w);
+          case 3:
+              return Vec4(p, q, this->z, this->w);
+          case 4:
+              return Vec4(t, p, this->z, this->w);
+          case 5:
+              return Vec4(this->z, p, q, this->w);
+          default:
+              assert(0);
+          }
+      }
+      /**
+       * Convert RGB color to HSV
+       * @param  rgb RGBA color in [0,1]
+       * @return HSV color with h in [0,360] and s,v in [0,1], alpha is not changed
+       */
+      Vec4 RgbToHsv() const
+      {
+          float max = std::max(std::max(this->x, this->y), this->z);
+          float min = std::min(std::min(this->x, this->y), this->z);
+          float dist = max - min;
+
+          if (dist == 0)
+              return Vec4(0, 0, max, this->w);
+
+          float s = (max < std::numeric_limits<float>::epsilon()) ? 0 : 1 - min / max;
+          Vec4 hsv = Vec4(0, s, max, this->w);
+          if (max == this->x)
+          {
+              hsv.x = (int)(60.0f * (this->y - this->z) / dist) % 360;
+          }
+          else if (max == this->y)
+          {
+              hsv.x = 120.0f + (60.0f * (this->z - this->x) / dist);
+          }
+          else if (max == this->z)
+          {
+              hsv.x = 240.0f + (60.0f * (this->x - this->y) / dist);
+          }
+
+          if (hsv.x < 0)
+              hsv.x += 360.0f;
+
+          return hsv;
+      }
+
 
     // vector operation
     T length() const;
