@@ -81,6 +81,7 @@ namespace Star
               return Vec4(this->z, p, q, this->w);
           default:
               assert(0);
+              return Vec4(0, 0, 0, 0);
           }
       }
       /**
