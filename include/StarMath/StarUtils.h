@@ -57,6 +57,11 @@ namespace Star
             return 0;
         return Star::sinc(T(M_PI)*x)*Star::sinc(T(M_PI)*x/T(3));
     }
+
+    template<typename T> inline T align(T val, unsigned int alignment)
+    {
+        return (val+alignment-1) & ~(alignment-1);
+    }
 }
 
 #endif
